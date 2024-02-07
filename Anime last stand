@@ -1,0 +1,15 @@
+while wait(3) do
+local args = {
+    [1] = workspace.Towers.Yami
+} 
+
+game:GetService("ReplicatedStorage").Remotes.Upgrade:InvokeServer(unpack(args)) 
+
+---place
+local args = {
+    [1] = "Yami",
+    [2] = CFrame.new(-217.18539428710938, 22.399402618408203, 38.066837310791016) * CFrame.Angles(-0, 0, -0)
+} 
+
+game:GetService("ReplicatedStorage").Remotes.PlaceTower:FireServer(unpack(args))
+end
