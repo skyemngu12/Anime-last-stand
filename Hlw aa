@@ -13,7 +13,7 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 local key = ""
 
 local Window = Fluent:CreateWindow({
-    Title = "Key System",
+    Title = "Lấy key đi mày!",
     SubTitle = "Pịa Xào Tỏi Húp",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 340),
@@ -27,8 +27,8 @@ local Tabs = {
 }
 
 local Entkey = Tabs.KeySys:AddInput("Input", {
-    Title = "Enter Key",
-    Description = "Enter Key Here",
+    Title = "Nhập key",
+    Description = "Nhấn vô đây để nhập key",
     Default = "",
     Placeholder = "Enter key…",
     Numeric = false,
@@ -39,22 +39,22 @@ local Entkey = Tabs.KeySys:AddInput("Input", {
 })
 
 local Checkkey = Tabs.KeySys:AddButton({
-    Title = "Check Key",
-    Description = "Enter Key before pressing this button",
+    Title = "Kiểm tra key",
+    Description = "Nhấn vô để check key",
     Callback = function()
         local response = KeyGuardLibrary.validateDefaultKey(key)
         if response == trueData then
-           print("Key is valid")
+           print("Key đúng!")
           loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Gui%20hlw"))()
         else
-           print("Key is invalid")
+           print("Key sai rồi má!")
         end
     end
 })
 
 local Getkey = Tabs.KeySys:AddButton({
-    Title = "Get Key",
-    Description = "Get Key here",
+    Title = "Lấy key",
+    Description = "Ấn vô đây lấy key",
     Callback = function()
        setclipboard(KeyGuardLibrary.getLink())
     end
