@@ -23,7 +23,7 @@ local Window = Fluent:CreateWindow({
 })
 
 local Tabs = {
-    KeySys = Window:AddTab({ Title = "Key System", Icon = "key" }),
+    KeySys = Window:AddTab({ Title = "Lấy Pịa", Icon = "key" }),
 }
 
 local Entkey = Tabs.KeySys:AddInput("Input", {
