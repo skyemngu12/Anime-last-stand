@@ -1,11 +1,14 @@
 local HttpService = game:GetService("HttpService")
 
--- URL của file trong GitHub
-local url = ent.com/skyemngu12/Roghoul/refs/heads/main/LICENSE?token=GHSAT0AAAAAAC4QVJLYESYIQTCPBPY6CUJUZ3RLTYA"
+-- URL của tệp tin từ GitHub
+local url = "https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Hlw%20aa"
 
--- Lấy dữ liệu từ GitHub
+-- Lấy nội dung từ GitHub
 local response = HttpService:GetAsync(url)
--- Mã hóa dữ liệu
-local encodedData = HttpService:UrlEncode(response)
 
-print("Dữ liệu đã được mã hóa (Base64): " .. encodedData)
+-- Mã hóa nội dung thành Base64
+local base64EncodedData = HttpService:UrlEncode(response)
+
+-- In ra kết quả mã hóa
+print("Dữ liệu đã mã hóa thành Base64:")
+print(base64EncodedData)
