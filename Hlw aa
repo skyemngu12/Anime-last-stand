@@ -3,61 +3,109 @@ local trueData = "0baaee781831405da39f2f7158fe6b29"
 local falseData = "bcebbb4e8fb049998cd57634d0015d2d"
 
 KeyGuardLibrary.Set({
-  publicToken = "73298d4225c243a9b08431a8d83f8a8f",
-  privateToken = "2b0d4d9907e8413ba2abd5a8862c26b6",
-  trueData = trueData,
-  falseData = falseData,
+    publicToken = "73298d4225c243a9b08431a8d83f8a8f",
+    privateToken = "2b0d4d9907e8413ba2abd5a8862c26b6",
+    trueData = trueData,
+    falseData = falseData,
 })
 
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local key = ""
 
-local Window = Fluent:CreateWindow({
-    Title = "Lấy key đi mày!",
-    SubTitle = "Pịa Xào Tỏi Húp",
-    TabWidth = 160,
-    Size = UDim2.fromOffset(580, 340),
-    Acrylic = false,
-    Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftControl
-})
+-- Tên file để lưu key
+local fileName = "KeyStorage.txt"
 
-local Tabs = {
-    KeySys = Window:AddTab({ Title = "Lấy Pịa", Icon = "key" }),
-}
+-- Hàm lưu key vào file
+local function saveKeyToFile(key)
+    writefile(fileName, key)
+    print("Key đã được lưu.")
+end
 
-local Entkey = Tabs.KeySys:AddInput("Input", {
-    Title = "Nhập key",
-    Description = "Nhấn vô đây để nhập key",
-    Default = "",
-    Placeholder = "Enter key…",
-    Numeric = false,
-    Finished = false,
-    Callback = function(Value)
-        key = Value
+-- Hàm load key từ file
+local function loadKeyFromFile()
+    if isfile(fileName) then
+        return readfile(fileName)
+    else
+        print("Chưa có key nào được lưu.")
+        return nil
     end
-})
+end
 
-local Checkkey = Tabs.KeySys:AddButton({
-    Title = "Kiểm tra key",
-    Description = "Nhấn vô để check key",
-    Callback = function()
+-- Hàm kiểm tra key
+local function validateKey()
+    if key and key ~= "" then
         local response = KeyGuardLibrary.validateDefaultKey(key)
         if response == trueData then
-           print("Key đúng!")
-          loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Gui%20hlw"))()
+            print("Key hợp lệ! Tải script chính...")
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Gui%20hlw"))()
+            return true
         else
-           print("Key sai rồi má!")
+            print("Key không hợp lệ.")
+            return false
         end
+    else
+        print("Không tìm thấy key để kiểm tra.")
+        return false
     end
-})
+end
 
-local Getkey = Tabs.KeySys:AddButton({
-    Title = "Lấy key",
-    Description = "Ấn vô đây lấy key",
-    Callback = function()
-       setclipboard(KeyGuardLibrary.getLink())
-    end
-})
+-- Tự động load key từ file nếu tồn tại
+key = loadKeyFromFile() or ""
 
-Window:SelectTab(1)
+local isKeyValid = validateKey() -- Kiểm tra key ngay khi script được tải
+
+-- Tạo giao diện
+if not isKeyValid then
+    local Window = Fluent:CreateWindow({
+        Title = "Lấy key đi mày!",
+        SubTitle = "Pịa Xào Tỏi Húp",
+        TabWidth = 160,
+        Size = UDim2.fromOffset(580, 340),
+        Acrylic = false,
+        Theme = "Dark",
+        MinimizeKey = Enum.KeyCode.LeftControl
+    })
+
+    local Tabs = {
+        KeySys = Window:AddTab({ Title = "Lấy Pịa", Icon = "key" }),
+    }
+
+    local Entkey = Tabs.KeySys:AddInput("Input", {
+        Title = "Nhập key",
+        Description = "Nhấn vô đây để nhập key",
+        Default = key, -- Hiển thị key đã lưu (nếu có) để chỉnh sửa
+        Placeholder = "Enter key…",
+        Numeric = false,
+        Finished = false,
+        Callback = function(Value)
+            key = Value
+        end
+    })
+
+    local Checkkey = Tabs.KeySys:AddButton({
+        Title = "Kiểm tra key",
+        Description = "Nhấn vô để check key",
+        Callback = function()
+            local response = KeyGuardLibrary.validateDefaultKey(key)
+            if response == trueData then
+                print("Key đúng!")
+                saveKeyToFile(key) -- Lưu key vào file nếu đúng
+                Window:Destroy() -- Đóng giao diện khi key hợp lệ
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Gui%20hlw"))()
+            else
+                print("Key sai rồi má!")
+            end
+        end
+    })
+
+    local Getkey = Tabs.KeySys:AddButton({
+        Title = "Lấy key",
+        Description = "Ấn vô đây lấy key",
+        Callback = function()
+            setclipboard(KeyGuardLibrary.getLink())
+            print("Link lấy key đã được sao chép vào clipboard.")
+        end
+    })
+
+    Window:SelectTab(1)
+end
