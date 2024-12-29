@@ -1,15 +1,111 @@
-local HttpService = game:GetService("HttpService")
+local KeyGuardLibrary = loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
+local trueData = "0baaee781831405da39f2f7158fe6b29"
+local falseData = "bcebbb4e8fb049998cd57634d0015d2d"
 
--- Base64 Script đã mã hóa
-local encodedScript = "local KeyGuardLibrary = loadstring(game:HttpGet(\"https://cdn.keyguardian.org/library/v1.0.0.lua\"))()\nlocal trueData = \"0baaee781831405da39f2f7158fe6b29\"\nlocal falseData = \"bcebbb4e8fb049998cd57634d0015d2d\"\n\nKeyGuardLibrary.Set({\n    publicToken = \"73298d4225c243a9b08431a8d83f8a8f\",\n    privateToken = \"2b0d4d9907e8413ba2abd5a8862c26b6\",\n    trueData = trueData,\n    falseData = falseData,\n})\n\nlocal Fluent = loadstring(game:HttpGet(\"https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua\"))()\nlocal key = \"\"\n\n-- Tên file để lưu key\nlocal fileName = \"KeyStorage.txt\"\n\n-- Hàm lưu key vào file\nlocal function saveKeyToFile(key)\n    writefile(fileName, key)\n    print(\"Key đã được lưu.\")\nend\n\n-- Hàm load key từ file\nlocal function loadKeyFromFile()\n    if isfile(fileName) then\n        return readfile(fileName)\n    else\n        print(\"Chưa có key nào được lưu.\")\n        return nil\n    end\nend\n\n-- Hàm kiểm tra key\nlocal function validateKey()\n    if key and key ~= \"\" then\n        local response = KeyGuardLibrary.validateDefaultKey(key)\n        if response == trueData then\n            print(\"Key hợp lệ! Tải script chính...\")\n            loadstring(game:HttpGet(\"https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Gui%20hlw\"))()\n            return true\n        else\n            print(\"Key không hợp lệ.\")\n            return false\n        end\n    else\n        print(\"Không tìm thấy key để kiểm tra.\")\n        return false\n    end\nend\n\n-- Tự động load key từ file nếu tồn tại\nkey = loadKeyFromFile() or \"\"\n\nlocal isKeyValid = validateKey() -- Kiểm tra key ngay khi script được tải\n\n-- Tạo giao diện\nif not isKeyValid then\n    local Window = Fluent:CreateWindow({\n        Title = \"Lấy key đi mày!\",\n        SubTitle = \"Pịa Xào Tỏi Húp\",\n        TabWidth = 160,\n        Size = UDim2.fromOffset(580, 340),\n        Acrylic = false,\n        Theme = \"Dark\",\n        MinimizeKey = Enum.KeyCode.LeftControl\n    })\n\n    local Tabs = {\n        KeySys = Window:AddTab({ Title = \"Lấy Pịa\", Icon = \"key\" }),\n    }\n\n    local Entkey = Tabs.KeySys:AddInput(\"Input\", {\n        Title = \"Nhập key\",\n        Description = \"Nhấn vô đây để nhập key\",\n        Default = key, -- Hiển thị key đã lưu (nếu có) để chỉnh sửa\n        Placeholder = \"Enter key…\",\n        Numeric = false,\n        Finished = false,\n        Callback = function(Value)\n            key = Value\n        end\n    })\n\n    local Checkkey = Tabs.KeySys:AddButton({\n        Title = \"Kiểm tra key\",\n        Description = \"Nhấn vô để check key\",\n        Callback = function()\n            local response = KeyGuardLibrary.validateDefaultKey(key)\n            if response == trueData then\n                print(\"Key đúng!\")\n                saveKeyToFile(key) -- Lưu key vào file nếu đúng\n                Window:Destroy() -- Đóng giao diện khi key hợp lệ\n                loadstring(game:HttpGet(\"https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Gui%20hlw\"))()\n            else\n                print(\"Key sai rồi má!\")\n            end\n        end\n    })\n\n    local Getkey = Tabs.KeySys:AddButton({\n        Title = \"Lấy key\",\n        Description = \"Ấn vô đây lấy key\",\n        Callback = function()\n            setclipboard(KeyGuardLibrary.getLink())\n            print(\"Link lấy key đã được sao chép vào clipboard.\")\n        end\n    })\n\n    Window:SelectTab(1)\nend\n\n " -- Thay đoạn này bằng Base64 đã mã hóa
+KeyGuardLibrary.Set({
+    publicToken = "73298d4225c243a9b08431a8d83f8a8f",
+    privateToken = "2b0d4d9907e8413ba2abd5a8862c26b6",
+    trueData = trueData,
+    falseData = falseData,
+})
 
--- Giải mã Base64
-local function decodeBase64(encoded)
-    return HttpService:JSONDecode('["' .. encoded .. '"]')[1]
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local key = ""
+
+-- Tên file để lưu key
+local fileName = "KeyStorage.txt"
+
+-- Hàm lưu key vào file
+local function saveKeyToFile(key)
+    writefile(fileName, key)
+    print("Key đã được lưu.")
 end
 
-local decodedScript = decodeBase64(encodedScript)
-print("Script sau khi giải mã:", decodedScript)
+-- Hàm load key từ file
+local function loadKeyFromFile()
+    if isfile(fileName) then
+        return readfile(fileName)
+    else
+        print("Chưa có key nào được lưu.")
+        return nil
+    end
+end
 
--- Chạy script đã giải mã
-loadstring(decodedScript)()
+-- Hàm kiểm tra key
+local function validateKey()
+    if key and key ~= "" then
+        local response = KeyGuardLibrary.validateDefaultKey(key)
+        if response == trueData then
+            print("Key hợp lệ! Tải script chính...")
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Gui%20hlw"))()
+            return true
+        else
+            print("Key không hợp lệ.")
+            return false
+        end
+    else
+        print("Không tìm thấy key để kiểm tra.")
+        return false
+    end
+end
+
+-- Tự động load key từ file nếu tồn tại
+key = loadKeyFromFile() or ""
+
+local isKeyValid = validateKey() -- Kiểm tra key ngay khi script được tải
+
+-- Tạo giao diện
+if not isKeyValid then
+    local Window = Fluent:CreateWindow({
+        Title = "Lấy key đi mày!",
+        SubTitle = "Pịa Xào Tỏi Húp",
+        TabWidth = 160,
+        Size = UDim2.fromOffset(580, 340),
+        Acrylic = false,
+        Theme = "Dark",
+        MinimizeKey = Enum.KeyCode.LeftControl
+    })
+
+    local Tabs = {
+        KeySys = Window:AddTab({ Title = "Lấy Pịa", Icon = "key" }),
+    }
+
+    local Entkey = Tabs.KeySys:AddInput("Input", {
+        Title = "Nhập key",
+        Description = "Nhấn vô đây để nhập key",
+        Default = key, -- Hiển thị key đã lưu (nếu có) để chỉnh sửa
+        Placeholder = "Enter key…",
+        Numeric = false,
+        Finished = false,
+        Callback = function(Value)
+            key = Value
+        end
+    })
+
+    local Checkkey = Tabs.KeySys:AddButton({
+        Title = "Kiểm tra key",
+        Description = "Nhấn vô để check key",
+        Callback = function()
+            local response = KeyGuardLibrary.validateDefaultKey(key)
+            if response == trueData then
+                print("Key đúng!")
+                saveKeyToFile(key) -- Lưu key vào file nếu đúng
+                Window:Destroy() -- Đóng giao diện khi key hợp lệ
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Gui%20hlw"))()
+            else
+                print("Key sai rồi má!")
+            end
+        end
+    })
+
+    local Getkey = Tabs.KeySys:AddButton({
+        Title = "Lấy key",
+        Description = "Ấn vô đây lấy key",
+        Callback = function()
+            setclipboard(KeyGuardLibrary.getLink())
+            print("Link lấy key đã được sao chép vào clipboard.")
+        end
+    })
+
+    Window:SelectTab(1)
+end
