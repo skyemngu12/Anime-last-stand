@@ -93,7 +93,7 @@ AutoHLWButton.MouseButton1Click:Connect(function()
         autoHLWCoroutine = coroutine.wrap(function()
             while isAutoHLWRunning do
                 pcall(function()
-                    loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Hlw%20aa"))()
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Auto%20join"))()
                 end)
                 wait(5)
             end
