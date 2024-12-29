@@ -37,7 +37,7 @@ local function validateKey()
         local response = KeyGuardLibrary.validateDefaultKey(key)
         if response == trueData then
             print("Key hợp lệ! Tải script chính...")
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Gui%20hlw"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Guihlw"))()
             return true
         else
             print("Key không hợp lệ.")
