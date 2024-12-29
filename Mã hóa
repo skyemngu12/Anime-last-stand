@@ -1,0 +1,11 @@
+local HttpService = game:GetService("HttpService")
+
+-- URL của file trong GitHub
+local url = "https://raw.githubusercontent.com/skyemngu12/Roghoul/refs/heads/main/LICENSE?token=GHSAT0AAAAAAC4QVJLYESYIQTCPBPY6CUJUZ3RLTYA"
+
+-- Lấy dữ liệu từ GitHub
+local response = HttpService:GetAsync(url)
+-- Mã hóa dữ liệu
+local encodedData = HttpService:UrlEncode(response)
+
+print("Dữ liệu đã được mã hóa (Base64): " .. encodedData)
