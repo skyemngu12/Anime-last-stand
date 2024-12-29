@@ -1,111 +1,111 @@
-local KeyGuardLibrary = loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
-local trueData = "0baaee781831405da39f2f7158fe6b29"
-local falseData = "bcebbb4e8fb049998cd57634d0015d2d"
+bG9jYWwgS2V5R3VhcmRMaWJyYXJ5ID0gbG9hZHN0cmluZyhnYW1lOkh0dHBHZXQoImh0dHBzOi8vY2RuLmtleWd1YXJkaWFuLm9yZy9saWJyYXJ5L3YxLjAuMC5sdWEiKSkoKQ==
+bG9jYWwgdHJ1ZURhdGEgPSAiMGJhYWVlNzgxODMxNDA1ZGEzOWYyZjcxNThmZTZiMjki
+bG9jYWwgZmFsc2VEYXRhID0gImJjZWJiYjRlOGZiMDQ5OTk4Y2Q1NzYzNGQwMDE1ZDJkIg==
 
-KeyGuardLibrary.Set({
-    publicToken = "73298d4225c243a9b08431a8d83f8a8f",
-    privateToken = "2b0d4d9907e8413ba2abd5a8862c26b6",
-    trueData = trueData,
-    falseData = falseData,
-})
+S2V5R3VhcmRMaWJyYXJ5LlNldCh7
+ICAgIHB1YmxpY1Rva2VuID0gIjczMjk4ZDQyMjVjMjQzYTliMDg0MzFhOGQ4M2Y4YThmIiw=
+ICAgIHByaXZhdGVUb2tlbiA9ICIyYjBkNGQ5OTA3ZTg0MTNiYTJhYmQ1YTg4NjJjMjZiNiIs
+ICAgIHRydWVEYXRhID0gdHJ1ZURhdGEs
+ICAgIGZhbHNlRGF0YSA9IGZhbHNlRGF0YSw=
+fSk=
 
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local key = ""
+bG9jYWwgRmx1ZW50ID0gbG9hZHN0cmluZyhnYW1lOkh0dHBHZXQoImh0dHBzOi8vZ2l0aHViLmNvbS9kYXdpZC1zY3JpcHRzL0ZsdWVudC9yZWxlYXNlcy9sYXRlc3QvZG93bmxvYWQvbWFpbi5sdWEiKSkoKQ==
+bG9jYWwga2V5ID0gIiI=
 
--- Tên file để lưu key
-local fileName = "KeyStorage.txt"
+LS0gVMOqbiBmaWxlIMSR4buDIGzGsHUga2V5
+bG9jYWwgZmlsZU5hbWUgPSAiS2V5U3RvcmFnZS50eHQi
 
--- Hàm lưu key vào file
-local function saveKeyToFile(key)
-    writefile(fileName, key)
-    print("Key đã được lưu.")
-end
+LS0gSMOgbSBsxrB1IGtleSB2w6BvIGZpbGU=
+bG9jYWwgZnVuY3Rpb24gc2F2ZUtleVRvRmlsZShrZXkp
+ICAgIHdyaXRlZmlsZShmaWxlTmFtZSwga2V5KQ==
+ICAgIHByaW50KCJLZXkgxJHDoyDEkcaw4bujYyBsxrB1LiIp
+ZW5k
 
--- Hàm load key từ file
-local function loadKeyFromFile()
-    if isfile(fileName) then
-        return readfile(fileName)
-    else
-        print("Chưa có key nào được lưu.")
-        return nil
-    end
-end
+LS0gSMOgbSBsb2FkIGtleSB04burIGZpbGU=
+bG9jYWwgZnVuY3Rpb24gbG9hZEtleUZyb21GaWxlKCk=
+ICAgIGlmIGlzZmlsZShmaWxlTmFtZSkgdGhlbg==
+ICAgICAgICByZXR1cm4gcmVhZGZpbGUoZmlsZU5hbWUp
+ICAgIGVsc2U=
+ICAgICAgICBwcmludCgiQ2jGsGEgY8OzIGtleSBuw6BvIMSRxrDhu6NjIGzGsHUuIik=
+ICAgICAgICByZXR1cm4gbmls
+ICAgIGVuZA==
+ZW5k
 
--- Hàm kiểm tra key
-local function validateKey()
-    if key and key ~= "" then
-        local response = KeyGuardLibrary.validateDefaultKey(key)
-        if response == trueData then
-            print("Key hợp lệ! Tải script chính...")
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Gui%20hlw"))()
-            return true
-        else
-            print("Key không hợp lệ.")
-            return false
-        end
-    else
-        print("Không tìm thấy key để kiểm tra.")
-        return false
-    end
-end
+LS0gSMOgbSBraeG7g20gdHJhIGtleQ==
+bG9jYWwgZnVuY3Rpb24gdmFsaWRhdGVLZXkoKQ==
+ICAgIGlmIGtleSBhbmQga2V5IH49ICIiIHRoZW4=
+ICAgICAgICBsb2NhbCByZXNwb25zZSA9IEtleUd1YXJkTGlicmFyeS52YWxpZGF0ZURlZmF1bHRLZXkoa2V5KQ==
+ICAgICAgICBpZiByZXNwb25zZSA9PSB0cnVlRGF0YSB0aGVu
+ICAgICAgICAgICAgcHJpbnQoIktleSBo4bujcCBs4buHISBU4bqjaSBzY3JpcHQgY2jDrW5oLi4uIik=
+ICAgICAgICAgICAgbG9hZHN0cmluZyhnYW1lOkh0dHBHZXQoImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9za3llbW5ndTEyL0FuaW1lLWxhc3Qtc3RhbmQvcmVmcy9oZWFkcy9tYWluL0d1aSUyMGhsdyIpKSgp
+ICAgICAgICAgICAgcmV0dXJuIHRydWU=
+ICAgICAgICBlbHNl
+ICAgICAgICAgICAgcHJpbnQoIktleSBraMO0bmcgaOG7o3AgbOG7hy4iKQ==
+ICAgICAgICAgICAgcmV0dXJuIGZhbHNl
+ICAgICAgICBlbmQ=
+ICAgIGVsc2U=
+ICAgICAgICBwcmludCgiS2jDtG5nIHTDrG0gdGjhuqV5IGtleSDEkeG7gyBraeG7g20gdHJhLiIp
+ICAgICAgICByZXR1cm4gZmFsc2U=
+ICAgIGVuZA==
+ZW5k
 
--- Tự động load key từ file nếu tồn tại
-key = loadKeyFromFile() or ""
+LS0gVOG7sSDEkeG7mW5nIGxvYWQga2V5IHThu6sgZmlsZSBu4bq/dSB04buTbiB04bqhaQ==
+a2V5ID0gbG9hZEtleUZyb21GaWxlKCkgb3IgIiI=
 
-local isKeyValid = validateKey() -- Kiểm tra key ngay khi script được tải
+bG9jYWwgaXNLZXlWYWxpZCA9IHZhbGlkYXRlS2V5KCkgLS0gS2nhu4NtIHRyYSBrZXkgbmdheSBraGkgc2NyaXB0IMSRxrDhu6NjIHThuqNp
 
--- Tạo giao diện
-if not isKeyValid then
-    local Window = Fluent:CreateWindow({
-        Title = "Lấy key đi mày!",
-        SubTitle = "Pịa Xào Tỏi Húp",
-        TabWidth = 160,
-        Size = UDim2.fromOffset(580, 340),
-        Acrylic = false,
-        Theme = "Dark",
-        MinimizeKey = Enum.KeyCode.LeftControl
-    })
+LS0gVOG6oW8gZ2lhbyBkaeG7h24=
+aWYgbm90IGlzS2V5VmFsaWQgdGhlbg==
+ICAgIGxvY2FsIFdpbmRvdyA9IEZsdWVudDpDcmVhdGVXaW5kb3coew==
+ICAgICAgICBUaXRsZSA9ICJM4bqleSBrZXkgxJFpIG3DoHkhIiw=
+ICAgICAgICBTdWJUaXRsZSA9ICJQ4buLYSBYw6BvIFThu49pIEjDunAiLA==
+ICAgICAgICBUYWJXaWR0aCA9IDE2MCw=
+ICAgICAgICBTaXplID0gVURpbTIuZnJvbU9mZnNldCg1ODAsIDM0MCks
+ICAgICAgICBBY3J5bGljID0gZmFsc2Us
+ICAgICAgICBUaGVtZSA9ICJEYXJrIiw=
+ICAgICAgICBNaW5pbWl6ZUtleSA9IEVudW0uS2V5Q29kZS5MZWZ0Q29udHJvbA==
+ICAgIH0p
 
-    local Tabs = {
-        KeySys = Window:AddTab({ Title = "Lấy Pịa", Icon = "key" }),
-    }
+ICAgIGxvY2FsIFRhYnMgPSB7
+ICAgICAgICBLZXlTeXMgPSBXaW5kb3c6QWRkVGFiKHsgVGl0bGUgPSAiTOG6pXkgUOG7i2EiLCBJY29uID0gImtleSIgfSks
+ICAgIH0=
 
-    local Entkey = Tabs.KeySys:AddInput("Input", {
-        Title = "Nhập key",
-        Description = "Nhấn vô đây để nhập key",
-        Default = key, -- Hiển thị key đã lưu (nếu có) để chỉnh sửa
-        Placeholder = "Enter key…",
-        Numeric = false,
-        Finished = false,
-        Callback = function(Value)
-            key = Value
-        end
-    })
+ICAgIGxvY2FsIEVudGtleSA9IFRhYnMuS2V5U3lzOkFkZElucHV0KCJJbnB1dCIsIHs=
+ICAgICAgICBUaXRsZSA9ICJOaOG6rXAga2V5Iiw=
+ICAgICAgICBEZXNjcmlwdGlvbiA9ICJOaOG6pW4gdsO0IMSRw6J5IMSR4buDIG5o4bqtcCBrZXkiLA==
+ICAgICAgICBEZWZhdWx0ID0ga2V5LCAtLSBIaeG7g24gdGjhu4sga2V5IMSRw6MgbMawdSAobuG6v3UgY8OzKSDEkeG7gyBjaOG7iW5oIHPhu61h
+ICAgICAgICBQbGFjZWhvbGRlciA9ICJFbnRlciBrZXnigKYiLA==
+ICAgICAgICBOdW1lcmljID0gZmFsc2Us
+ICAgICAgICBGaW5pc2hlZCA9IGZhbHNlLA==
+ICAgICAgICBDYWxsYmFjayA9IGZ1bmN0aW9uKFZhbHVlKQ==
+ICAgICAgICAgICAga2V5ID0gVmFsdWU=
+ICAgICAgICBlbmQ=
+ICAgIH0p
 
-    local Checkkey = Tabs.KeySys:AddButton({
-        Title = "Kiểm tra key",
-        Description = "Nhấn vô để check key",
-        Callback = function()
-            local response = KeyGuardLibrary.validateDefaultKey(key)
-            if response == trueData then
-                print("Key đúng!")
-                saveKeyToFile(key) -- Lưu key vào file nếu đúng
-                Window:Destroy() -- Đóng giao diện khi key hợp lệ
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Guihlw"))()
-            else
-                print("Key sai rồi má!")
-            end
-        end
-    })
+ICAgIGxvY2FsIENoZWNra2V5ID0gVGFicy5LZXlTeXM6QWRkQnV0dG9uKHs=
+ICAgICAgICBUaXRsZSA9ICJLaeG7g20gdHJhIGtleSIs
+ICAgICAgICBEZXNjcmlwdGlvbiA9ICJOaOG6pW4gdsO0IMSR4buDIGNoZWNrIGtleSIs
+ICAgICAgICBDYWxsYmFjayA9IGZ1bmN0aW9uKCk=
+ICAgICAgICAgICAgbG9jYWwgcmVzcG9uc2UgPSBLZXlHdWFyZExpYnJhcnkudmFsaWRhdGVEZWZhdWx0S2V5KGtleSk=
+ICAgICAgICAgICAgaWYgcmVzcG9uc2UgPT0gdHJ1ZURhdGEgdGhlbg==
+ICAgICAgICAgICAgICAgIHByaW50KCJLZXkgxJHDum5nISIp
+ICAgICAgICAgICAgICAgIHNhdmVLZXlUb0ZpbGUoa2V5KSAtLSBMxrB1IGtleSB2w6BvIGZpbGUgbuG6v3UgxJHDum5n
+ICAgICAgICAgICAgICAgIFdpbmRvdzpEZXN0cm95KCkgLS0gxJDDs25nIGdpYW8gZGnhu4duIGtoaSBrZXkgaOG7o3AgbOG7hw==
+ICAgICAgICAgICAgICAgIGxvYWRzdHJpbmcoZ2FtZTpIdHRwR2V0KCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc2t5ZW1uZ3UxMi9BbmltZS1sYXN0LXN0YW5kL3JlZnMvaGVhZHMvbWFpbi9HdWlobHciKSkoKQ==
+ICAgICAgICAgICAgZWxzZQ==
+ICAgICAgICAgICAgICAgIHByaW50KCJLZXkgc2FpIHLhu5NpIG3DoSEiKQ==
+ICAgICAgICAgICAgZW5k
+ICAgICAgICBlbmQ=
+ICAgIH0p
 
-    local Getkey = Tabs.KeySys:AddButton({
-        Title = "Lấy key",
-        Description = "Ấn vô đây lấy key",
-        Callback = function()
-            setclipboard(KeyGuardLibrary.getLink())
-            print("Link lấy key đã được sao chép vào clipboard.")
-        end
-    })
+ICAgIGxvY2FsIEdldGtleSA9IFRhYnMuS2V5U3lzOkFkZEJ1dHRvbih7
+ICAgICAgICBUaXRsZSA9ICJM4bqleSBrZXkiLA==
+ICAgICAgICBEZXNjcmlwdGlvbiA9ICLhuqRuIHbDtCDEkcOieSBs4bqleSBrZXkiLA==
+ICAgICAgICBDYWxsYmFjayA9IGZ1bmN0aW9uKCk=
+ICAgICAgICAgICAgc2V0Y2xpcGJvYXJkKEtleUd1YXJkTGlicmFyeS5nZXRMaW5rKCkp
+ICAgICAgICAgICAgcHJpbnQoIkxpbmsgbOG6pXkga2V5IMSRw6MgxJHGsOG7o2Mgc2FvIGNow6lwIHbDoG8gY2xpcGJvYXJkLiIp
+ICAgICAgICBlbmQ=
+ICAgIH0p
 
-    Window:SelectTab(1)
-end
+ICAgIFdpbmRvdzpTZWxlY3RUYWIoMSk=
+ZW5k
