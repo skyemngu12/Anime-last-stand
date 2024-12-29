@@ -91,7 +91,7 @@ if not isKeyValid then
                 print("Key đúng!")
                 saveKeyToFile(key) -- Lưu key vào file nếu đúng
                 Window:Destroy() -- Đóng giao diện khi key hợp lệ
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Gui%20hlw"))()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Guihlw"))()
             else
                 print("Key sai rồi má!")
             end
