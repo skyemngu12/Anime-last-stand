@@ -1,0 +1,112 @@
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local AutoHLWButton = Instance.new("TextButton")
+local AutoWinterButton = Instance.new("TextButton")
+local UserInputService = game:GetService("UserInputService")
+
+local Dragging = false
+local DragStart
+local StartPosition
+local LastTouch
+
+-- Gán GUI vào PlayerGUI
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Main Frame (kích thước: 75x75)
+MainFrame.Size = UDim2.new(0, 75, 0, 75)
+MainFrame.Position = UDim2.new(0.5, -37, 0.5, -37)
+MainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MainFrame.Parent = ScreenGui
+MainFrame.Active = true
+MainFrame.Draggable = false -- Sử dụng hàm kéo riêng
+
+-- Nút Auto HLW (kích thước: 65x25)
+AutoHLWButton.Size = UDim2.new(0, 65, 0, 25)
+AutoHLWButton.Position = UDim2.new(0, 5, 0, 5)
+AutoHLWButton.Text = "Auto HLW: OFF"
+AutoHLWButton.Parent = MainFrame
+AutoHLWButton.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
+AutoHLWButton.TextColor3 = Color3.new(1, 1, 1)
+AutoHLWButton.Font = Enum.Font.SourceSans
+AutoHLWButton.TextSize = 12
+
+-- Nút Auto Winter (kích thước: 65x25)
+AutoWinterButton.Size = UDim2.new(0, 65, 0, 25)
+AutoWinterButton.Position = UDim2.new(0, 5, 0, 35)
+AutoWinterButton.Text = "Auto Winter (đợi cập nhật)"
+AutoWinterButton.Parent = MainFrame
+AutoWinterButton.BackgroundColor3 = Color3.fromRGB(255, 85, 85)
+AutoWinterButton.TextColor3 = Color3.new(1, 1, 1)
+AutoWinterButton.Font = Enum.Font.SourceSans
+AutoWinterButton.TextSize = 12
+
+-- Biến kiểm tra trạng thái Auto HLW
+local isAutoHLWRunning = false
+local autoHLWCoroutine
+
+-- Kéo thả GUI (PC và điện thoại)
+local function updatePosition(delta)
+    MainFrame.Position = UDim2.new(
+        StartPosition.X.Scale,
+        StartPosition.X.Offset + delta.X,
+        StartPosition.Y.Scale,
+        StartPosition.Y.Offset + delta.Y
+    )
+end
+
+MainFrame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        Dragging = true
+        DragStart = input.Position
+        StartPosition = MainFrame.Position
+        LastTouch = input
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                Dragging = false
+            end
+        end)
+    end
+end)
+
+MainFrame.InputChanged:Connect(function(input)
+    if Dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input == LastTouch) then
+        local delta = input.Position - DragStart
+        updatePosition(delta)
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if Dragging and input == LastTouch then
+        local delta = input.Position - DragStart
+        updatePosition(delta)
+    end
+end)
+
+-- Chức năng Auto HLW
+AutoHLWButton.MouseButton1Click:Connect(function()
+    if not isAutoHLWRunning then
+        isAutoHLWRunning = true
+        AutoHLWButton.Text = "Auto HLW: ON"
+        AutoHLWButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+
+        -- Chạy Auto HLW mỗi 5 giây
+        autoHLWCoroutine = coroutine.wrap(function()
+            while isAutoHLWRunning do
+                pcall(function()
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Hlw%20aa"))()
+                end)
+                wait(5)
+            end
+        end)
+        autoHLWCoroutine()
+    else
+        isAutoHLWRunning = false
+        AutoHLWButton.Text = "Auto HLW: OFF"
+        AutoHLWButton.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
+    end
+end)
+
+-- Placeholder cho Auto Winter
+AutoWinterButton.MouseButton1Click:Connect(function()
+    print("Auto Winter sẽ được cập nhật sau!")
+end)
