@@ -3,6 +3,7 @@ local MainFrame = Instance.new("Frame")
 local AutoHLWButton = Instance.new("TextButton")
 local AutoWinterButton = Instance.new("TextButton")
 local UserInputService = game:GetService("UserInputService")
+local HttpService = game:GetService("HttpService")
 
 local Dragging = false
 local DragStart
@@ -12,15 +13,15 @@ local LastTouch
 -- Gán GUI vào PlayerGUI
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
--- Main Frame (kích thước: 75x75)
+-- Main Frame (thay đổi kích thước thành 75x75)
 MainFrame.Size = UDim2.new(0, 75, 0, 75)
 MainFrame.Position = UDim2.new(0.5, -37, 0.5, -37)
 MainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 MainFrame.Parent = ScreenGui
 MainFrame.Active = true
-MainFrame.Draggable = false -- Sử dụng hàm kéo riêng
+MainFrame.Draggable = false
 
--- Nút Auto HLW (kích thước: 65x25)
+-- Nút Auto HLW
 AutoHLWButton.Size = UDim2.new(0, 65, 0, 25)
 AutoHLWButton.Position = UDim2.new(0, 5, 0, 5)
 AutoHLWButton.Text = "Auto HLW: OFF"
@@ -30,7 +31,7 @@ AutoHLWButton.TextColor3 = Color3.new(1, 1, 1)
 AutoHLWButton.Font = Enum.Font.SourceSans
 AutoHLWButton.TextSize = 12
 
--- Nút Auto Winter (kích thước: 65x25)
+-- Nút Auto Winter
 AutoWinterButton.Size = UDim2.new(0, 65, 0, 25)
 AutoWinterButton.Position = UDim2.new(0, 5, 0, 35)
 AutoWinterButton.Text = "Auto Winter (đợi cập nhật)"
@@ -43,6 +44,71 @@ AutoWinterButton.TextSize = 12
 -- Biến kiểm tra trạng thái Auto HLW
 local isAutoHLWRunning = false
 local autoHLWCoroutine
+
+-- Kiểm tra xem có tồn tại tệp cài đặt không, và tải trạng thái
+local function loadSettings()
+    local settings = {
+        ["auto hlw"] = false,  -- Mặc định là tắt
+    }
+    -- Kiểm tra nếu tệp đã tồn tại
+    if isfile("settings.json") then
+        -- Đọc dữ liệu tệp và giải mã
+        local jsonData = readfile("settings.json")
+        settings = HttpService:JSONDecode(jsonData)
+    end
+    return settings
+end
+
+local settings = loadSettings()
+local isAutoHLWEnabled = settings["auto hlw"]
+
+-- Cập nhật trạng thái Auto HLW khi tệp được tải
+if isAutoHLWEnabled then
+    AutoHLWButton.Text = "Auto HLW: ON"
+    AutoHLWButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+end
+
+-- Ghi lại trạng thái vào tệp khi người dùng thay đổi cài đặt
+local function saveSettings()
+    local data = {
+        ["auto hlw"] = isAutoHLWEnabled,
+    }
+    local jsonData = HttpService:JSONEncode(data)
+    writefile("settings.json", jsonData)
+end
+
+-- Chức năng Auto HLW
+AutoHLWButton.MouseButton1Click:Connect(function()
+    if not isAutoHLWRunning then
+        isAutoHLWRunning = true
+        AutoHLWButton.Text = "Auto HLW: ON"
+        AutoHLWButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+
+        -- Chạy Auto HLW mỗi 5 giây
+        autoHLWCoroutine = coroutine.wrap(function()
+            while isAutoHLWRunning do
+                pcall(function()
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Auto%20join"))()
+                end)
+                wait(5)
+            end
+        end)
+        autoHLWCoroutine()
+    else
+        isAutoHLWRunning = false
+        AutoHLWButton.Text = "Auto HLW: OFF"
+        AutoHLWButton.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
+    end
+
+    -- Cập nhật trạng thái và lưu lại
+    isAutoHLWEnabled = isAutoHLWRunning
+    saveSettings()
+end)
+
+-- Placeholder cho Auto Winter
+AutoWinterButton.MouseButton1Click:Connect(function()
+    print("Auto Winter sẽ được cập nhật sau!")
+end)
 
 -- Kéo thả GUI (PC và điện thoại)
 local function updatePosition(delta)
@@ -80,33 +146,4 @@ UserInputService.InputChanged:Connect(function(input)
         local delta = input.Position - DragStart
         updatePosition(delta)
     end
-end)
-
--- Chức năng Auto HLW
-AutoHLWButton.MouseButton1Click:Connect(function()
-    if not isAutoHLWRunning then
-        isAutoHLWRunning = true
-        AutoHLWButton.Text = "Auto HLW: ON"
-        AutoHLWButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-
-        -- Chạy Auto HLW mỗi 5 giây
-        autoHLWCoroutine = coroutine.wrap(function()
-            while isAutoHLWRunning do
-                pcall(function()
-                    loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Auto%20join"))()
-                end)
-                wait(5)
-            end
-        end)
-        autoHLWCoroutine()
-    else
-        isAutoHLWRunning = false
-        AutoHLWButton.Text = "Auto HLW: OFF"
-        AutoHLWButton.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
-    end
-end)
-
--- Placeholder cho Auto Winter
-AutoWinterButton.MouseButton1Click:Connect(function()
-    print("Auto Winter sẽ được cập nhật sau!")
 end)
