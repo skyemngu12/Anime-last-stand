@@ -1,1 +1,2 @@
-
+local url = "https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Gui%20hlw"
+loadstring(game:HttpGet(url))()
