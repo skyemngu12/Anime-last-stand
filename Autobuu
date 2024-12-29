@@ -1,12 +1,6 @@
-local function hexToString(hex)
-    return hex:gsub('%x%x', function(cc)
-        return string.char(tonumber(cc, 16))
-    end)
-end
+local args = {
+    [1] = "halloween2_event"
+}
 
--- Đây là chuỗi Hex đã mã hóa (thay bằng giá trị bạn thu được)
-local encodedScript = "6C6F63616C2061726773203D207B0A202020205B315D203D202268616C6C6F7765656E325F6576656E74220A7D0A0A67616D653A4765745365727669636528225265706C69636174656453746F7261676522293A57616974466F724368696C642822656E64706F696E747322293A57616974466F724368696C642822636C69656E745F746F5F73657276657222293A57616974466F724368696C642822726571756573745F6D617463686D616B696E6722293A496E766F6B6553657276657228756E7061636B286172677329290A"; 
+game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("request_matchmaking"):InvokeServer(unpack(args))
 
--- Giải mã Hex và thực thi script Lua
-local decodedScript = hexToString(encodedScript)
-loadstring(decodedScript)()
