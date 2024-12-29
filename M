@@ -1,7 +1,0 @@
-local urlWithToken = "https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Gui%20hlw?token=yourToken"
-
--- Cắt bỏ phần ?token=xxx từ URL
-local cleanUrl = urlWithToken:match("^(.-)%?") or urlWithToken
-
--- Dùng URL đã được làm sạch
-print(cleanUrl)  -- Kết quả sẽ là URL mà không có token
