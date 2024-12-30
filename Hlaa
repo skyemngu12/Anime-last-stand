@@ -1,15 +1,111 @@
-local HttpService = game:GetService("HttpService")
+local KeyGuardLibrary = loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
+local trueData = "0baaee781831405da39f2f7158fe6b29"
+local falseData = "bcebbb4e8fb049998cd57634d0015d2d"
 
--- Base64 Script đã mã hóa
-local encodedScript = local UserInputService = game:GetService(\"UserInputService\")\nlocal HttpService = game:GetService(\"HttpService\")\nlocal ScreenGui = Instance.new(\"ScreenGui\")\nlocal MainFrame = Instance.new(\"Frame\")\nlocal AutoHLWButton = Instance.new(\"TextButton\")\nlocal AutoWinterButton = Instance.new(\"TextButton\")\n\nlocal Dragging = false\nlocal DragStart\nlocal StartPosition\nlocal ConfigFileName = \"settings.json\"\nlocal Settings = { [\"auto hlw\"] = false, [\"auto winter\"] = false }\n\n-- Gán GUI vào PlayerGUI\nScreenGui.Parent = game.Players.LocalPlayer:WaitForChild(\"PlayerGui\")\n\n-- Main Frame\nMainFrame.Size = UDim2.new(0, 75, 0, 75)\nMainFrame.Position = UDim2.new(0.5, -37, 0.5, -37)\nMainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)\nMainFrame.Parent = ScreenGui\nMainFrame.Active = true\n\n-- Nút Auto HLW\nAutoHLWButton.Size = UDim2.new(0, 65, 0, 25)\nAutoHLWButton.Position = UDim2.new(0, 5, 0, 5)\nAutoHLWButton.Text = \"Auto HLW: OFF\"\nAutoHLWButton.BackgroundColor3 = Color3.fromRGB(85, 170, 255)\nAutoHLWButton.TextColor3 = Color3.new(1, 1, 1)\nAutoHLWButton.Font = Enum.Font.SourceSans\nAutoHLWButton.TextSize = 12\nAutoHLWButton.Parent = MainFrame\n\n-- Nút Auto Winter\nAutoWinterButton.Size = UDim2.new(0, 65, 0, 25)\nAutoWinterButton.Position = UDim2.new(0, 5, 0, 35)\nAutoWinterButton.Text = \"Auto Winter: OFF\"\nAutoWinterButton.BackgroundColor3 = Color3.fromRGB(255, 85, 85)\nAutoWinterButton.TextColor3 = Color3.new(1, 1, 1)\nAutoWinterButton.Font = Enum.Font.SourceSans\nAutoWinterButton.TextSize = 12\nAutoWinterButton.Parent = MainFrame\n\n-- Kéo thả GUI (hỗ trợ PC và điện thoại)\nlocal function updatePosition(delta)\n    MainFrame.Position = UDim2.new(\n        StartPosition.X.Scale,\n        StartPosition.X.Offset + delta.X,\n        StartPosition.Y.Scale,\n        StartPosition.Y.Offset + delta.Y\n    )\nend\n\nMainFrame.InputBegan:Connect(function(input)\n    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then\n        Dragging = true\n        DragStart = input.Position\n        StartPosition = MainFrame.Position\n        input.Changed:Connect(function()\n            if input.UserInputState == Enum.UserInputState.End then\n                Dragging = false\n            end\n        end)\n    end\nend)\n\nMainFrame.InputChanged:Connect(function(input)\n    if Dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then\n        local delta = input.Position - DragStart\n        updatePosition(delta)\n    end\nend)\n\n-- Tạo hoặc tải tệp cài đặt\nlocal function loadSettings()\n    if isfile(ConfigFileName) then\n        local data = readfile(ConfigFileName)\n        local loadedSettings = HttpService:JSONDecode(data)\n        for key, value in pairs(loadedSettings) do\n            Settings[key] = value\n        end\n    else\n        writefile(ConfigFileName, HttpService:JSONEncode(Settings))\n    end\nend\n\n-- Lưu cài đặt\nlocal function saveSettings()\n    writefile(ConfigFileName, HttpService:JSONEncode(Settings))\nend\n\n-- Hàm chạy Auto HLW\nlocal function startAutoHLW()\n    coroutine.wrap(function()\n        while Settings[\"auto hlw\"] do\n            pcall(function()\n                loadstring(game:HttpGet(\"https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Guihlw\"))()\n            end)\n            wait(5)\n        end\n    end)()\nend\n\n-- Áp dụng trạng thái từ cài đặt\nlocal function applySettings()\n    -- Cập nhật trạng thái nút Auto HLW\n    if Settings[\"auto hlw\"] then\n        AutoHLWButton.Text = \"Auto HLW: ON\"\n        AutoHLWButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)\n        startAutoHLW() -- Chạy script chính nếu tính năng bật\n    else\n        AutoHLWButton.Text = \"Auto HLW: OFF\"\n        AutoHLWButton.BackgroundColor3 = Color3.fromRGB(85, 170, 255)\n    end\nend\n\n-- Tải cài đặt khi khởi chạy\nloadSettings()\napplySettings()\n\n-- Chức năng Auto HLW\nAutoHLWButton.MouseButton1Click:Connect(function()\n    Settings[\"auto hlw\"] = not Settings[\"auto hlw\"]\n    saveSettings()\n    applySettings()\nend)\n\n-- Placeholder cho Auto Winter\nAutoWinterButton.MouseButton1Click:Connect(function()\n    Settings[\"auto winter\"] = not Settings[\"auto winter\"]\n    saveSettings()\n    if Settings[\"auto winter\"] then\n        AutoWinterButton.Text = \"Auto Winter: ON\"\n        AutoWinterButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)\n    else\n        AutoWinterButton.Text = \"Auto Winter: OFF\"\n        AutoWinterButton.BackgroundColor3 = Color3.fromRGB(255, 85, 85)\n    end\nend)\n\n" -- Thay đoạn này bằng Base64 đã mã hóa
+KeyGuardLibrary.Set({
+    publicToken = "73298d4225c243a9b08431a8d83f8a8f",
+    privateToken = "2b0d4d9907e8413ba2abd5a8862c26b6",
+    trueData = trueData,
+    falseData = falseData,
+})
 
--- Giải mã Base64
-local function decodeBase64(encoded)
-    return HttpService:JSONDecode('["' .. encoded .. '"]')[1]
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local key = ""
+
+-- Tên file để lưu key
+local fileName = "KeyStorage.txt"
+
+-- Hàm lưu key vào file
+local function saveKeyToFile(key)
+    writefile(fileName, key)
+    print("Key đã được lưu.")
 end
 
-local decodedScript = decodeBase64(encodedScript)
-print("Script sau khi giải mã:", decodedScript)
+-- Hàm load key từ file
+local function loadKeyFromFile()
+    if isfile(fileName) then
+        return readfile(fileName)
+    else
+        print("Chưa có key nào được lưu.")
+        return nil
+    end
+end
 
--- Chạy script đã giải mã
-loadstring(decodedScript)()
+-- Hàm kiểm tra key
+local function validateKey()
+    if key and key ~= "" then
+        local response = KeyGuardLibrary.validateDefaultKey(key)
+        if response == trueData then
+            print("Key hợp lệ! Tải script chính...")
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Guihlw"))()
+            return true
+        else
+            print("Key không hợp lệ.")
+            return false
+        end
+    else
+        print("Không tìm thấy key để kiểm tra.")
+        return false
+    end
+end
+
+-- Tự động load key từ file nếu tồn tại
+key = loadKeyFromFile() or ""
+
+local isKeyValid = validateKey() -- Kiểm tra key ngay khi script được tải
+
+-- Tạo giao diện
+if not isKeyValid then
+    local Window = Fluent:CreateWindow({
+        Title = "Lấy key đi mày!",
+        SubTitle = "Pịa Xào Tỏi Húp",
+        TabWidth = 160,
+        Size = UDim2.fromOffset(580, 340),
+        Acrylic = false,
+        Theme = "Dark",
+        MinimizeKey = Enum.KeyCode.LeftControl
+    })
+
+    local Tabs = {
+        KeySys = Window:AddTab({ Title = "Lấy Pịa", Icon = "key" }),
+    }
+
+    local Entkey = Tabs.KeySys:AddInput("Input", {
+        Title = "Nhập key",
+        Description = "Nhấn vô đây để nhập key",
+        Default = key, -- Hiển thị key đã lưu (nếu có) để chỉnh sửa
+        Placeholder = "Enter key…",
+        Numeric = false,
+        Finished = false,
+        Callback = function(Value)
+            key = Value
+        end
+    })
+
+    local Checkkey = Tabs.KeySys:AddButton({
+        Title = "Kiểm tra key",
+        Description = "Nhấn vô để check key",
+        Callback = function()
+            local response = KeyGuardLibrary.validateDefaultKey(key)
+            if response == trueData then
+                print("Key đúng!")
+                saveKeyToFile(key) -- Lưu key vào file nếu đúng
+                Window:Destroy() -- Đóng giao diện khi key hợp lệ
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Guihlw"))()
+            else
+                print("Key sai rồi má!")
+            end
+        end
+    })
+
+    local Getkey = Tabs.KeySys:AddButton({
+        Title = "Lấy key",
+        Description = "Ấn vô đây lấy key",
+        Callback = function()
+            setclipboard(KeyGuardLibrary.getLink())
+            print("Link lấy key đã được sao chép vào clipboard.")
+        end
+    })
+
+    Window:SelectTab(1)
+end
