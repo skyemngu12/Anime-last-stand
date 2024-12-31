@@ -1,17 +1,0 @@
-import base64
-
-# Dữ liệu mã hóa Base64
-encoded_data = "t򖆝mq{(.jbjz+bnInjZj[kڵi|^4ַ^|}hq_j[
-ZmǛm}ywM5ݝ)솹.&jznnXNxn\ۍ<}Z7Ƽ~⽫^Nfw}NwmmZζsnx6jx6iڵږǃj֥ƥ[hi-)ial"ru"w*meyZ-0ZwynjZjYz[{)hq_Wjg{$zmWƥ~ܶ*')쓠XzG¸yyx֦zGr[߾ihihq_w-塧J{!kab蟊Zazz޶~)^~)^5z[(ZrG%Wu)ZjWb{ږ'Z'{&vGxtbu^
-ں[J{)'zhǭj֭))졦T!hi-)ialܢ{^($駂v	j~֧w~ylfpn{k祱k{J{)!ij[zw^ǩ)*kaG)޶}lyzw~9~)^g)Zt&)^hqbUbv֭x⢚ڑ직+*mrؾ: xbUbv^ZjU0[Ыy^Z)ݣWGlWizzSivuDm}4ߍ�rږǓ
-2),)섞{ u~ШZjTn,Z)ݣ�u6N+exh(GIi
-{$]"znW7r*'6xiy{a쥺{rᱣiǡW^Izۦz}lxX^uVrGbuZ{%Z瞝hqB$i
-{$]mtWkkjG
-*m͆{܅$jY[iw-ƥ){)솹.&jjXj׃yҞG޲'kڵazzk{J{)౫)쓠XzG쯡z{hvzk/"jbHb졦Yhi-)ialܢ{^($駂v	j~֧w~ylfpz[guݖgi
-{$]mtWG
-*m)rjY[iw-z%jJ{!jKگ(Ir윱rXnuZ)ݣ-Mzw"
-
-# Giải mã Base64
-decoded_data = base64.b64decode(encoded_data).decode('utf-8')
-
-print("Dữ liệu gốc:", decoded_data)
