@@ -1,111 +1,115 @@
-KeyGuardLibrary cục bộ = loadstring(trò chơi:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
-dữ liệu trueData cục bộ = "0baaee781831405da39f2f7158fe6b29"
-dữ liệu false cục bộ = "bcebbb4e8fb049998cd57634d0015d2d"
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+local KeyGuardLibrary = loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
 
-KeyGuardLibrary. Bộ({
+local trueData = "0baaee781831405da39f2f7158fe6b29"
+local falseData = "bcebbb4e8fb049998cd57634d0015d2d"
+
+KeyGuardLibrary.Set({
     publicToken = "73298d4225c243a9b08431a8d83f8a8f",
-    PrivateToken = "2b0d4d9907e8413ba2abd5a8862c26b6",
+    privateToken = "2b0d4d9907e8413ba2abd5a8862c26b6",
     trueData = trueData,
     falseData = falseData,
 })
 
-cục bộ Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-khóa cục bộ = ""
+-- File lưu trữ key
+local fileName = "KeyStorage.txt"
 
--- Tên file để lưu khóa
-fileName cục bộ = "KeyStorage.txt"
+-- Hàm lưu key vào file
+local function saveKeyToFile(key)
+    writefile(fileName, key)
+end
 
--- Hàm lưu khóa vào file
-hàm cục bộ saveKeyToFile(key)
-    writefile(têntệp, khóa)
-    print("Key đã được lưu.")
-kết thúc
+-- Hàm load key từ file
+local function loadKeyFromFile()
+    if isfile(fileName) then
+        return readfile(fileName)
+    else
+        return nil
+    end
+end
 
--- Hàm tải khóa từ file
-hàm cục bộ loadKeyFromFile()
-    nếu isfile(fileName) thì
-        trả về readfile(fileName)
-    khác
-        print("Không có key nào được lưu.")
-        trả về nil
-    kết thúc
-kết thúc
+-- Kiểm tra key
+local function validateKey(key)
+    local response = KeyGuardLibrary.validateDefaultKey(key)
+    if response == trueData then
+        return true
+    else
+        return false
+    end
+end
 
--- Hàm kiểm tra key
-hàm cục bộ validateKey()
-    nếu key và key ~= "" thì
-        phản hồi cục bộ = KeyGuardLibrary.validateDefaultKey(key)
-        nếu phản hồi == trueData thì
-            print("Hợp lệ khóa! Tải script chính...")
-            loadstring(trò chơi:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Gui%20hlw"))()
-            trả về đúng
-        khác
-            print("Khóa không hợp lệ.")
-            trả về sai
-        kết thúc
-    khác
-        print("Không tìm thấy key để kiểm tra.")
-        trả về sai
-    kết thúc
-kết thúc
+-- Load key từ file
+local key = loadKeyFromFile()
+local isKeyValid = key and validateKey(key)
 
--- Tự động nạp key từ file nếu tồn tại
-key = loadKeyFromFile() hoặc ""
-
-local isKeyValid = validKey() -- Kiểm tra khóa ngay khi tải tập lệnh
-
--- Tạo giao diện
-nếu không isKeyValid thì
-    Cửa sổ cục bộ = Fluent:CreateWindow({
-        Title = "Lấy key đi mày!",
-        SubTitle = "Pịa Xào Tỏi Húp",
-        Chiều rộng tab = 160,
-        Kích thước = UDim2.fromOffset(580, 340),
-        Acrylic = giả,
-        Chủ đề = "Tối",
-        Thu nhỏ khóa = Enum.KeyCode.LeftControl
+-- GUI khi mở chương trình
+if not isKeyValid then
+    local Window = OrionLib:MakeWindow({
+        Name = "Lấy Key",
+        HidePremium = false,
+        SaveConfig = true,
+        IntroEnabled = false,
     })
 
-    Tab cục bộ = {
-        KeySys = Window:AddTab({ Title = "Lấy Pịa", Icon = "key" }),
-    }
-
-    Entkey cục bộ = Tabs.KeySys:AddInput("Đầu vào", {
-        Tiêu đề = "Nhập khóa",
-        Description = "Nhấn vô đây để nhập key",
-        Default = key, -- Hiển thị key đã lưu (nếu có) để chỉnh sửa
-        Chỗ giữ chỗ = "Nhập phím…",
-        Số = sai,
-        Hoàn thành = sai,
-        Gọi lại = hàm(Giá trị)
-            key = Giá trị
-        kết thúc
+    local Tab = Window:MakeTab({
+        Name = "Key System",
+        Icon = "rbxassetid://4483345998",
+        PremiumOnly = false
     })
 
-    Checkkey cục bộ = Tabs.KeySys:AddButton({
-        Title = "Kiểm tra key",
-        Description = "Nhấn vô để kiểm tra key",
-        Gọi lại = hàm()
-            phản hồi cục bộ = KeyGuardLibrary.validateDefaultKey(key)
-            nếu phản hồi == trueData thì
-                print("Khóa đúng!")
-                saveKeyToFile(key) -- Lưu khóa vào tập tin nếu đúng
-                Window:Destroy() -- Đóng giao diện khi khóa hợp lệ
-                loadstring(trò chơi:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Gui%20hlw"))()
-            khác
-                print("Key sai rồi nhé!")
-            kết thúc
-        kết thúc
+    -- Nhập key
+    Tab:AddTextbox({
+        Name = "Nhập Key",
+        Default = "",
+        TextDisappear = false,
+        Callback = function(value)
+            key = value
+        end
     })
 
-    Getkey cục bộ = Tabs.KeySys:AddButton({
-        Title = "Lấy key",
-        Description = "Ấn vô đây lấy key",
-        Gọi lại = hàm()
-            thiết lập clipboard(KeyGuardLibrary.getLink())
-            print("Khóa lấy liên kết đã được sao chép vào clipboard.")
-        kết thúc
+    -- Nút kiểm tra key
+    Tab:AddButton({
+        Name = "Kiểm tra Key",
+        Callback = function()
+            if validateKey(key) then
+                saveKeyToFile(key) -- Lưu key hợp lệ
+                OrionLib:MakeNotification({
+                    Name = "Key đúng!",
+                    Content = "Key của bạn hợp lệ. Đang tải script...",
+                    Image = "rbxassetid://4483345998",
+                    Time = 5
+                })
+                wait(1)
+                OrionLib:Destroy() -- Xóa GUI
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Guihlw"))()
+            else
+                OrionLib:MakeNotification({
+                    Name = "Key sai!",
+                    Content = "Vui lòng thử lại.",
+                    Image = "rbxassetid://4483345998",
+                    Time = 5
+                })
+            end
+        end
     })
 
-    Cửa sổ:SelectTab(1)
-kết thúc
+    -- Nút lấy key
+    Tab:AddButton({
+        Name = "Lấy Key",
+        Callback = function()
+            setclipboard(KeyGuardLibrary.getLink())
+            OrionLib:MakeNotification({
+                Name = "Key đã sao chép!",
+                Content = "Link lấy key đã được sao chép vào clipboard.",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        end
+    })
+
+    OrionLib:Init()
+else
+    -- Nếu key hợp lệ, tải ngay script chính
+    print("Key đã hợp lệ. Đang tải script...")
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Guihlw"))()
+end
