@@ -1,7 +1,34 @@
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 
--- Tạo Window chính
-local Window = OrionLib:MakeWindow({Name = "My GUI", HidePremium = false, SaveConfig = true, ConfigFolder = "MyConfig"})
+-- Tạo Window chính (kích thước giảm 50%)
+local Window = OrionLib:MakeWindow({
+    Name = "Pịa Hub",
+    HidePremium = false,
+    SaveConfig = true,
+    ConfigFolder = "MyConfig",
+    IntroEnabled = false,
+    Size = UDim2.new(0.25, 0, 0.25, 0) -- Giảm kích thước
+})
+
+-- File lưu trạng thái toggle
+local settingsFile = "ToggleSettings.json"
+
+-- Hàm đọc file JSON
+local function readSettings()
+    if isfile(settingsFile) then
+        return game:GetService("HttpService"):JSONDecode(readfile(settingsFile))
+    else
+        return {}
+    end
+end
+
+-- Hàm ghi file JSON
+local function saveSettings(settings)
+    writefile(settingsFile, game:GetService("HttpService"):JSONEncode(settings))
+end
+
+-- Tải settings từ file
+local settings = readSettings()
 
 -- Tạo Tab AutoEvent
 local Tab1 = Window:MakeTab({
@@ -14,15 +41,13 @@ local Tab1 = Window:MakeTab({
 local isAutoHlwRunning = false
 local autoHlwCoroutine
 
--- Biến điều khiển trạng thái Auto Winter
-local isAutoWinterRunning = false
-local autoWinterCoroutine
-
 -- Toggle Auto Hlw
 Tab1:AddToggle({
     Name = "Auto Hlw",
-    Default = false,
+    Default = settings.AutoHlw or false, -- Load trạng thái từ file
     Callback = function(Value)
+        settings.AutoHlw = Value
+        saveSettings(settings) -- Lưu trạng thái
         if Value then
             print("Auto Hlw Bật!")
             isAutoHlwRunning = true
@@ -44,11 +69,17 @@ Tab1:AddToggle({
     end    
 })
 
+-- Biến điều khiển trạng thái Auto Winter
+local isAutoWinterRunning = false
+local autoWinterCoroutine
+
 -- Toggle Auto Winter
 Tab1:AddToggle({
     Name = "Auto Winter",
-    Default = false,
+    Default = settings.AutoWinter or false, -- Load trạng thái từ file
     Callback = function(Value)
+        settings.AutoWinter = Value
+        saveSettings(settings) -- Lưu trạng thái
         if Value then
             print("Auto Winter Bật!")
             isAutoWinterRunning = true
