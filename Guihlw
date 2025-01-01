@@ -1,139 +1,93 @@
-local UserInputService = game:GetService("UserInputService")
-local HttpService = game:GetService("HttpService")
-local ScreenGui = Instance.new("ScreenGui")
-local MainFrame = Instance.new("Frame")
-local AutoHLWButton = Instance.new("TextButton")
-local AutoWinterButton = Instance.new("TextButton")
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 
-local Dragging = false
-local DragStart
-local StartPosition
-local ConfigFileName = "settings.json"
-local Settings = { ["auto hlw"] = false, ["auto winter"] = false }
+-- Tạo Window chính
+local Window = OrionLib:MakeWindow({Name = "My GUI", HidePremium = false, SaveConfig = true, ConfigFolder = "MyConfig"})
 
--- Gán GUI vào PlayerGUI
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+-- Tạo Tab AutoEvent
+local Tab1 = Window:MakeTab({
+    Name = "AutoEvent",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
 
--- Main Frame
-MainFrame.Size = UDim2.new(0, 75, 0, 75)
-MainFrame.Position = UDim2.new(0.5, -37, 0.5, -37)
-MainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-MainFrame.Parent = ScreenGui
-MainFrame.Active = true
+-- Biến điều khiển trạng thái Auto Hlw
+local isAutoHlwRunning = false
+local autoHlwCoroutine
 
--- Nút Auto HLW
-AutoHLWButton.Size = UDim2.new(0, 65, 0, 25)
-AutoHLWButton.Position = UDim2.new(0, 5, 0, 5)
-AutoHLWButton.Text = "Auto HLW: OFF"
-AutoHLWButton.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
-AutoHLWButton.TextColor3 = Color3.new(1, 1, 1)
-AutoHLWButton.Font = Enum.Font.SourceSans
-AutoHLWButton.TextSize = 12
-AutoHLWButton.Parent = MainFrame
+-- Biến điều khiển trạng thái Auto Winter
+local isAutoWinterRunning = false
+local autoWinterCoroutine
 
--- Nút Auto Winter
-AutoWinterButton.Size = UDim2.new(0, 65, 0, 25)
-AutoWinterButton.Position = UDim2.new(0, 5, 0, 35)
-AutoWinterButton.Text = "Auto Winter: OFF"
-AutoWinterButton.BackgroundColor3 = Color3.fromRGB(255, 85, 85)
-AutoWinterButton.TextColor3 = Color3.new(1, 1, 1)
-AutoWinterButton.Font = Enum.Font.SourceSans
-AutoWinterButton.TextSize = 12
-AutoWinterButton.Parent = MainFrame
+-- Toggle Auto Hlw
+Tab1:AddToggle({
+    Name = "Auto Hlw",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            print("Auto Hlw Bật!")
+            isAutoHlwRunning = true
 
--- Kéo thả GUI (hỗ trợ PC và điện thoại)
-local function updatePosition(delta)
-    MainFrame.Position = UDim2.new(
-        StartPosition.X.Scale,
-        StartPosition.X.Offset + delta.X,
-        StartPosition.Y.Scale,
-        StartPosition.Y.Offset + delta.Y
-    )
-end
-
-MainFrame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        Dragging = true
-        DragStart = input.Position
-        StartPosition = MainFrame.Position
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                Dragging = false
-            end
-        end)
-    end
-end)
-
-MainFrame.InputChanged:Connect(function(input)
-    if Dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-        local delta = input.Position - DragStart
-        updatePosition(delta)
-    end
-end)
-
--- Tạo hoặc tải tệp cài đặt
-local function loadSettings()
-    if isfile(ConfigFileName) then
-        local data = readfile(ConfigFileName)
-        local loadedSettings = HttpService:JSONDecode(data)
-        for key, value in pairs(loadedSettings) do
-            Settings[key] = value
-        end
-    else
-        writefile(ConfigFileName, HttpService:JSONEncode(Settings))
-    end
-end
-
--- Lưu cài đặt
-local function saveSettings()
-    writefile(ConfigFileName, HttpService:JSONEncode(Settings))
-end
-
--- Hàm chạy Auto HLW
-local function startAutoHLW()
-    coroutine.wrap(function()
-        while Settings["auto hlw"] do
-            pcall(function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Autobuu"))()
+            -- Chạy script Auto HLW liên tục
+            autoHlwCoroutine = coroutine.wrap(function()
+                while isAutoHlwRunning do
+                    pcall(function()
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Autobuu"))()
+                    end)
+                    wait(5) -- Lặp lại sau 5 giây
+                end
             end)
-            wait(5)
+            autoHlwCoroutine()
+        else
+            print("Auto Hlw Tắt!")
+            isAutoHlwRunning = false
         end
-    end)()
-end
+    end    
+})
 
--- Áp dụng trạng thái từ cài đặt
-local function applySettings()
-    -- Cập nhật trạng thái nút Auto HLW
-    if Settings["auto hlw"] then
-        AutoHLWButton.Text = "Auto HLW: ON"
-        AutoHLWButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-        startAutoHLW() -- Chạy script chính nếu tính năng bật
-    else
-        AutoHLWButton.Text = "Auto HLW: OFF"
-        AutoHLWButton.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
-    end
-end
+-- Toggle Auto Winter
+Tab1:AddToggle({
+    Name = "Auto Winter",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            print("Auto Winter Bật!")
+            isAutoWinterRunning = true
 
--- Tải cài đặt khi khởi chạy
-loadSettings()
-applySettings()
+            -- Chạy script Auto Winter liên tục
+            autoWinterCoroutine = coroutine.wrap(function()
+                while isAutoWinterRunning do
+                    pcall(function()
+                        -- Gọi script Auto Winter
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Autowwinter"))()
+                    end)
+                    wait(5) -- Lặp lại sau 5 giây
+                end
+            end)
+            autoWinterCoroutine()
+        else
+            print("Auto Winter Tắt!")
+            isAutoWinterRunning = false
+        end
+    end    
+})
 
--- Chức năng Auto HLW
-AutoHLWButton.MouseButton1Click:Connect(function()
-    Settings["auto hlw"] = not Settings["auto hlw"]
-    saveSettings()
-    applySettings()
-end)
+-- Tạo Tab AutoPlay
+local Tab2 = Window:MakeTab({
+    Name = "AutoPlay",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
 
--- Placeholder cho Auto Winter
-AutoWinterButton.MouseButton1Click:Connect(function()
-    Settings["auto winter"] = not Settings["auto winter"]
-    saveSettings()
-    if Settings["auto winter"] then
-        AutoWinterButton.Text = "Auto Winter: ON"
-        AutoWinterButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-    else
-        AutoWinterButton.Text = "Auto Winter: OFF"
-        AutoWinterButton.BackgroundColor3 = Color3.fromRGB(255, 85, 85)
-    end
-end)
+-- Tab AutoPlay để trống (chờ cập nhật tính năng)
+
+-- Tạo Tab Misc
+local Tab3 = Window:MakeTab({
+    Name = "Misc",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+-- Tab Misc để trống (chờ cập nhật tính năng)
+
+-- Khởi động GUI
+OrionLib:Init()
