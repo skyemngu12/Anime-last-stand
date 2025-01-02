@@ -1,0 +1,5 @@
+function AutoNext()
+    task.spawn(function()
+        local GameFinished = game:GetService("Workspace"):WaitForChild("_DATA"):WaitForChild("GameFinished")
+    end)
+end
