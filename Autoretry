@@ -1,0 +1,14 @@
+function AutoReplay()
+    print("AutoReplay Worked")
+    task.spawn(function()
+        local GameFinished = game:GetService("Workspace"):WaitForChild("_DATA"):WaitForChild("GameFinished")
+        GameFinished:GetPropertyChangedSignal("Value"):Connect(function()
+            if GameFinished.Value == true then
+                repeat task.wait() until game:GetService("Players").LocalPlayer.PlayerGui.ResultsUI.Enabled == true
+                print("Pressed Replay Worked")
+                local a={[1]="replay"}
+                game:GetService("ReplicatedStorage").endpoints.client_to_server.set_game_finished_vote:InvokeServer(unpack(a))
+            end
+        end)
+    end)
+end
