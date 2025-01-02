@@ -1,0 +1,191 @@
+-- Đợi người chơi load hoàn toàn
+repeat task.wait() until game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name)
+repeat task.wait() until game.Players.LocalPlayer.PlayerGui:FindFirstChild("collection")
+    :FindFirstChild("grid"):FindFirstChild("List")
+    :FindFirstChild("Outer"):FindFirstChild("UnitFrames")
+
+
+-- Tạo GUI sau khi load xong
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+
+
+-- Tạo Window chính (kích thước giảm 50%)
+local Window = OrionLib:MakeWindow({
+    Name = "Pịa Hub",
+    HidePremium = false,
+    SaveConfig = true,
+    ConfigFolder = "MyConfig",
+    IntroEnabled = false,
+    Size = UDim2.new(0.25, 0, 0.25, 0) -- Giảm kích thước
+})
+
+
+-- File lưu trạng thái toggle
+local settingsFile = "ToggleSettings.json"
+
+
+-- Hàm đọc file JSON
+local function readSettings()
+    if isfile(settingsFile) then
+        return game:GetService("HttpService"):JSONDecode(readfile(settingsFile))
+    else
+        return {}
+    end
+end
+
+
+-- Hàm ghi file JSON
+local function saveSettings(settings)
+    writefile(settingsFile, game:GetService("HttpService"):JSONEncode(settings))
+end
+
+
+-- Tải settings từ file
+local settings = readSettings()
+
+
+-- Tạo Tab Main
+local TabMain = Window:MakeTab({
+    Name = "Main",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+
+-- Toggle Auto Leave
+TabMain:AddToggle({
+    Name = "Auto Leave",
+    Default = settings.AutoLeave or false,
+    Callback = function(Value)
+        settings.AutoLeave = Value
+        saveSettings(settings) -- Lưu trạng thái
+        if Value then
+            print("Auto Leave Bật!")
+            pcall(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Autoleave"))()
+            end)
+        else
+            print("Auto Leave Tắt!")
+        end
+    end
+})
+
+
+-- Tạo Tab AutoEvent
+local Tab1 = Window:MakeTab({
+    Name = "AutoEvent",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+
+-- Biến điều khiển trạng thái Auto Hlw
+local isAutoHlwRunning = false
+local autoHlwCoroutine
+
+
+-- Toggle Auto Hlw
+Tab1:AddToggle({
+    Name = "Auto Hlw",
+    Default = settings.AutoHlw or false,
+    Callback = function(Value)
+        settings.AutoHlw = Value
+        saveSettings(settings) -- Lưu trạng thái
+        if Value then
+            print("Auto Hlw Bật!")
+            isAutoHlwRunning = true
+
+
+            -- Chạy script Auto HLW liên tục
+            autoHlwCoroutine = coroutine.wrap(function()
+                while isAutoHlwRunning do
+                    pcall(function()
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Autobuu"))()
+                    end)
+                    task.wait(5) -- Lặp lại sau 5 giây
+                end
+            end)
+            autoHlwCoroutine()
+        else
+            print("Auto Hlw Tắt!")
+            isAutoHlwRunning = false
+        end
+    end
+})
+
+
+-- Biến điều khiển trạng thái Auto Winter
+local isAutoWinterRunning = false
+local autoWinterCoroutine
+
+
+-- Toggle Auto Winter
+Tab1:AddToggle({
+    Name = "Auto Winter",
+    Default = settings.AutoWinter or false,
+    Callback = function(Value)
+        settings.AutoWinter = Value
+        saveSettings(settings) -- Lưu trạng thái
+        if Value then
+            print("Auto Winter Bật!")
+            isAutoWinterRunning = true
+
+
+            -- Chạy script Auto Winter liên tục
+            autoWinterCoroutine = coroutine.wrap(function()
+                while isAutoWinterRunning do
+                    pcall(function()
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Autowwinter"))()
+                    end)
+                    task.wait(5) -- Lặp lại sau 5 giây
+                end
+            end)
+            autoWinterCoroutine()
+        else
+            print("Auto Winter Tắt!")
+            isAutoWinterRunning = false
+        end
+    end
+})
+
+
+-- Tạo Tab AutoPlay
+local Tab2 = Window:MakeTab({
+    Name = "AutoPlay",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+
+-- Tab AutoPlay để trống (chờ cập nhật tính năng)
+
+
+-- Tạo Tab Misc
+local Tab3 = Window:MakeTab({
+    Name = "Misc",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+
+-- Toggle Anti AFK trong Tab Misc
+Tab3:AddToggle({
+    Name = "Anti AFK",
+    Default = settings.AntiAFK or false, -- Load trạng thái từ file
+    Callback = function(Value)
+        settings.AntiAFK = Value
+        saveSettings(settings) -- Lưu trạng thái
+        if Value then
+            print("Anti AFK Bật!")
+            pcall(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Antiafk"))()
+            end)
+        else
+            print("Anti AFK Tắt!")
+        end
+    end
+})
+
+
+-- Khởi động GUI
+OrionLib:Init()
