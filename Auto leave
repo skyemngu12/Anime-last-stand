@@ -10,7 +10,7 @@ function AutoLeaveWave()
                 local WaveX = game:GetService("Workspace")["_wave_num"].Value
                 if WaveX >= tonumber(autoleaveWaveX) then
                     continueWave = false
-                    wait()
+                    wait(3) -- Đợi 3 giây trước khi thoát game
                     game:GetService("TeleportService"):Teleport(8304191830, game.Players.LocalPlayer)
                 end
             end
