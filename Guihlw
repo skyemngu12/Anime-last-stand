@@ -1,3 +1,10 @@
+-- Đợi người chơi load hoàn toàn
+repeat task.wait() until game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name)
+repeat task.wait() until game.Players.LocalPlayer.PlayerGui:FindFirstChild("collection")
+    :FindFirstChild("grid"):FindFirstChild("List")
+    :FindFirstChild("Outer"):FindFirstChild("UnitFrames")
+
+-- Tạo GUI sau khi load xong
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 
 -- Tạo Window chính (kích thước giảm 50%)
@@ -30,6 +37,31 @@ end
 -- Tải settings từ file
 local settings = readSettings()
 
+-- Tạo Tab Main
+local TabMain = Window:MakeTab({
+    Name = "Main",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+-- Toggle Auto Leave
+TabMain:AddToggle({
+    Name = "Auto Leave",
+    Default = settings.AutoLeave or false,
+    Callback = function(Value)
+        settings.AutoLeave = Value
+        saveSettings(settings) -- Lưu trạng thái
+        if Value then
+            print("Auto Leave Bật!")
+            pcall(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Autoleave"))()
+            end)
+        else
+            print("Auto Leave Tắt!")
+        end
+    end
+})
+
 -- Tạo Tab AutoEvent
 local Tab1 = Window:MakeTab({
     Name = "AutoEvent",
@@ -44,7 +76,7 @@ local autoHlwCoroutine
 -- Toggle Auto Hlw
 Tab1:AddToggle({
     Name = "Auto Hlw",
-    Default = settings.AutoHlw or false, -- Load trạng thái từ file
+    Default = settings.AutoHlw or false,
     Callback = function(Value)
         settings.AutoHlw = Value
         saveSettings(settings) -- Lưu trạng thái
@@ -58,7 +90,7 @@ Tab1:AddToggle({
                     pcall(function()
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Autobuu"))()
                     end)
-                    wait(5) -- Lặp lại sau 5 giây
+                    task.wait(5) -- Lặp lại sau 5 giây
                 end
             end)
             autoHlwCoroutine()
@@ -66,7 +98,7 @@ Tab1:AddToggle({
             print("Auto Hlw Tắt!")
             isAutoHlwRunning = false
         end
-    end    
+    end
 })
 
 -- Biến điều khiển trạng thái Auto Winter
@@ -76,7 +108,7 @@ local autoWinterCoroutine
 -- Toggle Auto Winter
 Tab1:AddToggle({
     Name = "Auto Winter",
-    Default = settings.AutoWinter or false, -- Load trạng thái từ file
+    Default = settings.AutoWinter or false,
     Callback = function(Value)
         settings.AutoWinter = Value
         saveSettings(settings) -- Lưu trạng thái
@@ -88,10 +120,9 @@ Tab1:AddToggle({
             autoWinterCoroutine = coroutine.wrap(function()
                 while isAutoWinterRunning do
                     pcall(function()
-                        -- Gọi script Auto Winter
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Autowwinter"))()
                     end)
-                    wait(5) -- Lặp lại sau 5 giây
+                    task.wait(5) -- Lặp lại sau 5 giây
                 end
             end)
             autoWinterCoroutine()
@@ -99,7 +130,7 @@ Tab1:AddToggle({
             print("Auto Winter Tắt!")
             isAutoWinterRunning = false
         end
-    end    
+    end
 })
 
 -- Tạo Tab AutoPlay
@@ -118,7 +149,23 @@ local Tab3 = Window:MakeTab({
     PremiumOnly = false
 })
 
--- Tab Misc để trống (chờ cập nhật tính năng)
+-- Toggle Anti AFK trong Tab Misc
+Tab3:AddToggle({
+    Name = "Anti AFK",
+    Default = settings.AntiAFK or false, -- Load trạng thái từ file
+    Callback = function(Value)
+        settings.AntiAFK = Value
+        saveSettings(settings) -- Lưu trạng thái
+        if Value then
+            print("Anti AFK Bật!")
+            pcall(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/skyemngu12/Anime-last-stand/refs/heads/main/Antiafk"))()
+            end)
+        else
+            print("Anti AFK Tắt!")
+        end
+    end
+})
 
 -- Khởi động GUI
 OrionLib:Init()
