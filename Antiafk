@@ -1,0 +1,12 @@
+-- Anti-AFK Script
+local vu = game:GetService("VirtualUser")
+local player = game.Players.LocalPlayer
+
+-- Kích hoạt sự kiện khi server gửi tín hiệu ngừng hoạt động
+player.Idled:Connect(function()
+    vu:CaptureController()
+    vu:ClickButton2(Vector2.new()) -- Mô phỏng một cú click chuột phải
+    print("Anti-AFK: Tương tác đã được kích hoạt để ngăn chặn ngắt kết nối.")
+end)
+
+print("Anti-AFK script đang hoạt động. Bạn sẽ không bị kick!")
