@@ -1,0 +1,20 @@
+function AutoLeaveWave()
+    local function leaveWave()
+        if game.PlaceId == 8304191830 then
+            wait()
+        else
+            local continueWave = true
+            while Settings.AutoLeaveWave and continueWave do
+                wait()
+                local autoleaveWaveX = Options.autoleaveWaveX.Value
+                local WaveX = game:GetService("Workspace")["_wave_num"].Value
+                if WaveX >= tonumber(autoleaveWaveX) then
+                    continueWave = false
+                    wait()
+                    game:GetService("TeleportService"):Teleport(8304191830, game.Players.LocalPlayer)
+                end
+            end
+        end
+    end
+    leaveWave()
+end
