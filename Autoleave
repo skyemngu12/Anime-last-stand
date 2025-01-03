@@ -1,1 +1,19 @@
+local GameFinished = game:GetService("Workspace"):WaitForChild("_DATA"):WaitForChild("GameFinished")
+local TeleportService = game:GetService("TeleportService")
+local placeId = 8304191830 -- PlaceId mà bạn muốn teleport tới
 
+-- Kiểm tra trạng thái GameFinished, nếu game đã kết thúc thì thực hiện hành động
+GameFinished.Changed:Connect(function()
+    if GameFinished.Value then
+        -- Đợi 2 giây trước khi thực hiện hành động
+        wait(5)
+        
+        -- Thực hiện teleport tới PlaceId chỉ định
+        local player = game.Players.LocalPlayer
+        if player then
+            TeleportService:Teleport(placeId, player)
+        else
+            warn("Không tìm thấy người chơi. Không thể thực hiện teleport.")
+        end
+    end
+end)
