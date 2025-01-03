@@ -1,20 +1,12 @@
-function AutoLeaveWave()
-    local function leaveWave()
-        if game.PlaceId == 8304191830 then
-            wait()
-        else
-            local continueWave = true
-            while Settings.AutoLeaveWave and continueWave do
-                wait()
-                local autoleaveWaveX = Options.autoleaveWaveX.Value
-                local WaveX = game:GetService("Workspace")["_wave_num"].Value
-                if WaveX >= tonumber(autoleaveWaveX) then
-                    continueWave = false
-                    wait(3) -- Đợi 3 giây trước khi thoát game
-                    game:GetService("TeleportService"):Teleport(8304191830, game.Players.LocalPlayer)
-                end
-            end
-        end
+local GameFinished = game:GetService("Workspace"):WaitForChild("_DATA"):WaitForChild("GameFinished")
+
+-- Kiểm tra trạng thái GameFinished, nếu game đã kết thúc thì thực hiện hành động
+GameFinished.Changed:Connect(function()
+    if GameFinished.Value then
+        -- Đợi 2 giây trước khi thực hiện hành động
+        wait(2)
+        
+        -- Gọi function teleport về lobby
+        game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("teleport_back_to_lobby"):InvokeServer()
     end
-    leaveWave()
-end
+end)
