@@ -1,12 +1,1 @@
-local GameFinished = game:GetService("Workspace"):WaitForChild("_DATA"):WaitForChild("GameFinished")
 
--- Kiểm tra trạng thái GameFinished, nếu game đã kết thúc thì thực hiện hành động
-GameFinished.Changed:Connect(function()
-    if GameFinished.Value then
-        -- Đợi 2 giây trước khi thực hiện hành động
-        wait(2)
-        
-        -- Gọi function teleport về lobby
-        game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("teleport_back_to_lobby"):InvokeServer()
-    end
-end)
